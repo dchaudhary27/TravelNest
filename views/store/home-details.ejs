@@ -1,0 +1,54 @@
+<%- include('../partials/head') %>
+    </head>
+
+    <body>
+        <%- include('../partials/nav', { activeTab: 'home' }) %>
+            <main class="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 max-w-xl md:max-w-3xl lg:max-w-5xl">
+                <h2 class="text-3xl text-red-500 font-bold text-center mb-6">
+                    You are viewing details for:
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="rounded-lg overflow-hidden">
+                        <img src="<%= home.photo %>" alt="<%= home.houseName %>" class="w-full h-96 object-cover">
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="border-b pb-4">
+                            <h3 class="text-2xl font-semibold mb-2">Description</h3>
+                            <p class="text-gray-600">
+                                <%= home.description %>
+                            </p>
+                        </div>
+
+                        <div class="border-b pb-4">
+                            <h3 class="text-2xl font-semibold mb-2">Location</h3>
+                            <p class="text-gray-600">
+                                <%= home.address %>
+                            </p>
+                        </div>
+
+                        <div class="border-b pb-4">
+                            <h3 class="text-2xl font-semibold mb-2">Price</h3>
+                            <p class="text-green-600 text-xl font-bold">$<%= home.rentPerDay %> / night</p>
+                        </div>
+
+                        <div class="border-b pb-4">
+                            <h3 class="text-2xl font-semibold mb-2">Rating</h3>
+                            <div class="flex items-center space-x-1">
+                                <% for (let i=1; i <=5; i++) { %>
+                                    <span
+                                        class="text-xl <%= i <= home.rating ? 'text-yellow-500' : 'text-gray-300' %>">★</span>
+                                    <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center mt-4">
+                        <%- include('../partials/favourite') %>
+                    </div>
+                </div>
+
+            </main>
+    </body>
+
+    </html>

@@ -1,0 +1,34 @@
+<header class="bg-red-500 text-white p-4 shadow-md">
+    <nav class="container mx-auto flex justify-between items-center">
+        <ul class="flex space-x-4">
+            <li>
+                <a href="/"
+                    class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'Airbnb' ? 'bg-red-400' : '' %>">
+                    Airbnb</a>
+            </li>
+            <li>
+                <a href="/home-list"
+                    class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'home' ? 'bg-red-400' : '' %>">
+                    Home</a>
+            </li>
+            <li>
+                <a href="/host/host-home-list"
+                    class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'host-home-list' ? 'bg-red-400' : '' %>">
+                    Host Home List</a>
+            </li>
+            <li>
+                <a href="/host/add-home"
+                    class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'add-home' ? 'bg-red-400' : '' %>">Add
+                    Home</a>
+            </li>
+            <li>
+                <a href="/bookings"
+                    class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'bookings' ? 'bg-red-400' : '' %>">Bookings</a>
+            </li>
+            <li>
+                <a href="/favourite-list"
+                    class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'favourite-list' ? 'bg-red-400' : '' %>">Favourites</a>
+            </li>
+        </ul>
+    </nav>
+</header>

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "homeName": "Aashirwad",
+    "rentPerDay": "1556",
+    "address": "d,fmkdjkmkmf",
+    "rating": "5",
+    "photo": "/images/house1.png"
+  },
+  {
+    "id": "2",
+    "homeName": "Bhakti Apartments",
+    "rentPerDay": "5645",
+    "address": "1147 Ramswy view crt",
+    "rating": "5",
+    "photo": "/images/house2.png"
+  },
+  {
+    "homeName": "Summer Home",
+    "rentPerDay": "4465",
+    "address": "random",
+    "rating": "3",
+    "photo": "/images/house3.png",
+    "id": "0.28810112359830375"
+  }
+]
