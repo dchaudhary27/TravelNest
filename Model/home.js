@@ -13,9 +13,17 @@ module.exports = class Home {
   }
 
   save() {
-    this.id = Math.floor(Math.random() * 10).toString();
     Home.fetchHomes((registeredHomes) => {
-      registeredHomes.push(this);
+      console.log("Updating existing home with ID:", this.id);
+      if (this.id) {
+        registeredHomes = registeredHomes.map((home) =>
+          home.id === this.id ? this : home
+        );
+      } else {
+        this.id = Date.now().toString();
+        registeredHomes.push(this);
+      }
+
       const filePath = path.join(rootDir, "data", "homes.json");
       fs.writeFile(filePath, JSON.stringify(registeredHomes), (err) => {
         if (err) {

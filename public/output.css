@@ -286,6 +286,9 @@
   .max-w-xl {
     max-width: var(--container-xl);
   }
+  .flex-1 {
+    flex: 1;
+  }
   .cursor-pointer {
     cursor: pointer;
   }
@@ -300,6 +303,9 @@
   }
   .justify-center {
     justify-content: center;
+  }
+  .gap-2 {
+    gap: calc(var(--spacing) * 2);
   }
   .gap-8 {
     gap: calc(var(--spacing) * 8);
