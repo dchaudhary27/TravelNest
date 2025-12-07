@@ -1,1 +1,26 @@
-[{"homeName":"Swagat Apartments","rentPerDay":"5677","address":"agsjshhdjshfjkkfe","rating":"3","photo":"/images/house2.png","id":"2"},{"homeName":"Krishna Apartments","rentPerDay":"1000","address":"Dwarka","rating":"5","photo":"/images/house2.png","id":"1"},{"homeName":"Gokuldham","rentPerDay":"2500","address":"Mumbai","rating":"4","photo":"/images/house1.png","id":"1764805524755"}]
+[
+  {
+    "homeName": "Krishna Apartments",
+    "rentPerDay": "1000",
+    "address": "Dwarka",
+    "rating": "5",
+    "photo": "/images/house2.png",
+    "id": "1"
+  },
+  {
+    "homeName": "Gokuldham",
+    "rentPerDay": "2500",
+    "address": "Mumbai",
+    "rating": "4",
+    "photo": "/images/house1.png",
+    "id": "1764805524755"
+  },
+  {
+    "homeName": "Sea View Villa",
+    "rentPerDay": "4000",
+    "address": "Goa",
+    "rating": "5",
+    "photo": "/images/house3.png",
+    "id": "1764805601234"
+  }
+]
