@@ -20,4 +20,14 @@ module.exports = class Favourites {
       callback(err ? [] : JSON.parse(data));
     });
   }
+  static deleteFavouriteByID(homeId, callback) {
+    Favourites.getFavourites((favourites) => {
+      const updatedFavourites = favourites.filter((id) => id !== homeId);
+      fs.writeFile(
+        favouriteFilePath,
+        JSON.stringify(updatedFavourites),
+        callback
+      );
+    });
+  }
 };

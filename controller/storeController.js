@@ -60,3 +60,14 @@ exports.getHomeDetails = (req, res, next) => {
     }
   });
 };
+
+exports.postRemoveFromFavourites = (req, res, next) => {
+  const homeId = req.params.homeId;
+  console.log("Deleting from favourites Home ID:", homeId);
+  Favourites.deleteFavouriteByID(homeId, (err) => {
+    if (err) {
+      console.log("Error deleting favourite home:", err);
+    }
+    res.redirect("/favourites");
+  });
+};

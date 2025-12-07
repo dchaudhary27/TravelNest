@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
+const Favourites = require("./favourites");
 const rootDir = require("../util/pathutils");
 
 module.exports = class Home {
@@ -44,6 +45,15 @@ module.exports = class Home {
     Home.fetchHomes((Homes) => {
       const homeFound = Homes.find((home) => home.id === homeID);
       callback(homeFound);
+    });
+  }
+  static deleteByID(homeID, callback) {
+    Home.fetchHomes((homes) => {
+      const updatedHomes = homes.filter((home) => home.id !== homeID);
+      const filePath = path.join(rootDir, "data", "homes.json");
+      fs.writeFile(filePath, JSON.stringify(updatedHomes), (error) => {
+        Favourites.deleteFavouriteByID(homeID, callback);
+      });
     });
   }
 };
