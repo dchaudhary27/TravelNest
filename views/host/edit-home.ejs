@@ -47,6 +47,11 @@
                             class=" block w-full text-gray-700 border border-gray-300 rounded-lg p-2 bg-gray-50">
                     </div>
 
+                    <div>
+                        <textarea name="description" placeholder="Describe your home"
+                            class="w-full px-4 py-2 mt-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"><%= editMode ? home.description : '' %></textarea>
+                    </div>
+
                     <br />
                     <input type="submit" value="<%= editMode ? "Update Home" : "Register Home" %>"
                         class="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300" />
