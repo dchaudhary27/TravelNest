@@ -1,9 +1,18 @@
-const mysql = require("mysql2");
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "travelNest27",
-  database: "travelNest",
-});
+const mongoDb = require("mongodb");
+const MongoClient = mongoDb.MongoClient;
 
-module.exports = pool.promise();
+const Mongo_URL =
+  "mongodb+srv://dchaudhari27:<db_password>@travelnest.rx3cffk.mongodb.net/?appName=travelNest";
+
+const mongoConnect = (callback) => {
+  MongoClient.coonect(Mongo_URL)
+    .then((client) => {
+      console.log("Connected to MongoDB");
+      callback(client);
+    })
+    .cathch((err) => {
+      console.log("Failed to connect to MongoDB", err);
+    });
+};
+
+module.exports = mongoConnect;
