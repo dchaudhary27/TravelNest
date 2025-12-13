@@ -10,8 +10,7 @@ exports.getEditHome = (req, res, next) => {
   const homeId = req.params.homeId;
   const editMode = req.query.edit === "true";
 
-  Home.findByID(homeId).then(([homes]) => {
-    const home = homes[0];
+  Home.findByID(homeId).then((home) => {
     if (!home) {
       return res.redirect("/host/host-home-list");
     }

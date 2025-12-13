@@ -4,6 +4,7 @@ const path = require("path");
 const { getDb } = require("../util/database");
 const Favourites = require("./favourites");
 const rootDir = require("../util/pathutils");
+const { ObjectId } = require("mongodb");
 
 module.exports = class Home {
   constructor(homeName, rentPerDay, address, rating, photo, description, id) {
@@ -13,7 +14,7 @@ module.exports = class Home {
     this.rating = rating;
     this.photo = photo;
     this.description = description;
-    this.id = id;
+    this._id = _id;
   }
 
   save() {
@@ -26,6 +27,12 @@ module.exports = class Home {
     return db.collection("homes").find().toArray();
   }
 
-  static findByID(homeID) {}
+  static findByID(homeID) {
+    const db = getDb();
+    return db
+      .collection("homes")
+      .find({ _id: new ObjectId(String(homeID)) })
+      .next();
+  }
   static deleteByID(homeID) {}
 };

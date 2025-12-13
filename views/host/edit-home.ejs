@@ -6,7 +6,7 @@
             <main class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md">
                 <h1 class="text-3xl font-bold mb-6 text-center text-gray-800"><%= editMode ? "Edit" : "Register" %>Your Home on TravelNest</h1>
                 <form action="/host/<%= editMode ? "edit-home" : "add-home"%>" method="POST" class="max-w-md mx-auto">
-                    <input type="hidden" name="id" value="<%= editMode ? home.id : '' %>"/>
+                    <input type="hidden" name="id" value="<%= editMode ? home._id : '' %>"/>
                     <input type="text" value = "<%= editMode? home.homeName: '' %>" name="homeName" placeholder="Enter your House Name"
                         class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" />
                     <input type="number" value = "<%= editMode? home.rentPerDay: '' %>"  name="rentPerDay" placeholder="Enter Rent Per Day"

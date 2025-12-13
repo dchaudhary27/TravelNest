@@ -35,10 +35,10 @@
                                         <% } %>
                                 </div>
                                 <div class="flex gap-2">
-                                    <a href="/host/edit-home/<%= home.id %>/?edit=true"
+                                    <a href="/host/edit-home/<%= home._id %>/?edit=true"
                                         class="flex-1 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 text-center">Edit
                                     </a>
-                                    <form action="/host/delete-home/<%= home.id %>" method="POST" class="flex-1">
+                                    <form action="/host/delete-home/<%= home._id %>" method="POST" class="flex-1">
                                         <button type="submit"
                                             class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300">Delete</button>
                                     </form>

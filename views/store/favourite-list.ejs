@@ -34,7 +34,7 @@
                                             class="text-xl <%= i <= home.rating ? 'text-yellow-500' : 'text-gray-300' %>">★</span>
                                         <% } %>
                                 </div>
-                                <form action="/favourites/delete/<%= home.id %>" method="POST">
+                                <form action="/favourites/delete/<%= home._id %>" method="POST">
                                     <button
                                         class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300">Remove
                                         from Favourites</button>
