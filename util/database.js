@@ -1,15 +1,15 @@
+require("dotenv").config();
 const mongoDb = require("mongodb");
 const MongoClient = mongoDb.MongoClient;
 
-const Mongo_URL =
-  "mongodb+srv://dchaudhari27:travelNest27@travelnest.rx3cffk.mongodb.net/?appName=travelNest";
+const MONGO_URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@travelnest.rx3cffk.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 
 let _db;
 
 const mongoConnect = (callback) => {
-  MongoClient.connect(Mongo_URL)
+  MongoClient.connect(MONGO_URL)
     .then((client) => {
-      _db = client.db("travelNest");
+      _db = client.db(process.env.MONGO_DB);
       callback();
     })
     .catch((err) => {

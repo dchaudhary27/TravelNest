@@ -1,8 +1,10 @@
+require("dotenv").config();
 const express = require("express");
-
 const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
 const { mongoConnect } = require("./util/database");
+
+const PORT = process.env.PORT;
 
 const { error404 } = require("./controller/error");
 
@@ -17,7 +19,6 @@ app.use("/host", hostRouter);
 app.use(express.static("public"));
 
 app.use(error404);
-const PORT = 3001;
 
 mongoConnect(() => {
   app.listen(PORT, () => {
