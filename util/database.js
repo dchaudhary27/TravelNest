@@ -2,17 +2,27 @@ const mongoDb = require("mongodb");
 const MongoClient = mongoDb.MongoClient;
 
 const Mongo_URL =
-  "mongodb+srv://dchaudhari27:<db_password>@travelnest.rx3cffk.mongodb.net/?appName=travelNest";
+  "mongodb+srv://dchaudhari27:travelNest27@travelnest.rx3cffk.mongodb.net/?appName=travelNest";
+
+let _db;
 
 const mongoConnect = (callback) => {
-  MongoClient.coonect(Mongo_URL)
+  MongoClient.connect(Mongo_URL)
     .then((client) => {
-      console.log("Connected to MongoDB");
-      callback(client);
+      _db = client.db("travelNest");
+      callback();
     })
-    .cathch((err) => {
+    .catch((err) => {
       console.log("Failed to connect to MongoDB", err);
     });
 };
 
-module.exports = mongoConnect;
+const getDb = () => {
+  if (!_db) {
+    throw new Error("No database found!");
+  }
+  return _db;
+};
+
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;

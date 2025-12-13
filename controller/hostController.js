@@ -25,7 +25,7 @@ exports.getEditHome = (req, res, next) => {
   });
 };
 exports.gethosthomeList = (req, res, next) => {
-  Home.fetchHomes().then(([registeredHomes]) => {
+  Home.fetchHomes().then((registeredHomes) => {
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Host Home List",
@@ -44,7 +44,9 @@ exports.postAddHome = (req, res, next) => {
     photo,
     description
   );
-  home.save();
+  home.save().then(() => {
+    console.log("Home Added Successfully");
+  });
   res.redirect("/host/host-home-list");
 };
 
@@ -61,7 +63,9 @@ exports.postEditHome = (req, res, next) => {
     id
   );
 
-  home.save();
+  home.save().then(() => {
+    console.log("Home Updated Successfully");
+  });
   res.redirect("/host/host-home-list");
 };
 
