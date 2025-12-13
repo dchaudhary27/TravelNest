@@ -5,7 +5,16 @@ module.exports = class Favourites {
   }
   save() {
     const db = getDb();
-    return db.collection("favourites").insertOne(this);
+    return db
+      .collection("favourites")
+      .findOne({ homeId: this.homeId })
+      .then((existingFav) => {
+        if (existingFav) {
+          return Promise.resolve();
+        } else {
+          return db.collection("favourites").insertOne(this);
+        }
+      });
   }
   static getFavourites() {
     const db = getDb();
