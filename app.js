@@ -2,9 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
-const { mongoConnect } = require("./util/database");
+const mongoose = require("mongoose");
 
 const PORT = process.env.PORT;
+const MONGO_URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@travelnest.rx3cffk.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 
 const { error404 } = require("./controller/error");
 
@@ -20,8 +21,14 @@ app.use(express.static("public"));
 
 app.use(error404);
 
-mongoConnect(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+mongoose
+  .connect(MONGO_URL)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Error connecting to MongoDB:", err);
   });
-});
