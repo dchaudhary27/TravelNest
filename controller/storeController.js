@@ -2,7 +2,7 @@ const Home = require("../Model/home");
 const Favourites = require("../Model/favourites");
 
 exports.getindex = (req, res, next) => {
-  Home.fetchHomes().then((registeredHomes) => {
+  Home.find().then((registeredHomes) => {
     res.render("store/index", {
       registeredHomes: registeredHomes,
       pageTitle: "Airbnb Home",
@@ -10,7 +10,7 @@ exports.getindex = (req, res, next) => {
   });
 };
 exports.getHomeList = (req, res, next) => {
-  Home.fetchHomes().then((registeredHomes) =>
+  Home.find().then((registeredHomes) =>
     res.render("store/home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Home list",
@@ -26,7 +26,7 @@ exports.getBookings = (req, res, next) => {
 exports.getFavouritesList = (req, res, next) => {
   Favourites.getFavourites().then((favourites) => {
     favourites = favourites.map((fav) => fav.homeId);
-    Home.fetchHomes().then((registeredHomes) => {
+    Home.find().then((registeredHomes) => {
       const favouriteHomes = registeredHomes.filter((home) =>
         favourites.includes(home._id.toString())
       );
@@ -54,7 +54,7 @@ exports.postAddToFavourites = (req, res, next) => {
 exports.getHomeDetails = (req, res, next) => {
   const homeId = req.params.homeId;
 
-  Home.findByID(homeId).then((home) => {
+  Home.findById(homeId).then((home) => {
     if (!home) {
       res.redirect("/home-list");
     } else {
@@ -71,7 +71,7 @@ exports.postRemoveFromFavourites = (req, res, next) => {
   console.log("Deleting from favourites Home ID:", homeId);
   Favourites.deleteFavouriteByID(homeId)
     .then(() => {
-      console.log("Home removed from Favourites Successfully!!");
+      console.log("Home removed from Favourites Successfully!!", homeId);
     })
     .catch((err) => {
       console.log("Error removing from favourites:", err);

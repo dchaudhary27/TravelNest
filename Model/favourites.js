@@ -1,4 +1,4 @@
-const { getDb } = require("../util/database");
+const { ObjectId } = require("mongodb");
 module.exports = class Favourites {
   constructor(homeId) {
     this.homeId = homeId;
@@ -9,10 +9,10 @@ module.exports = class Favourites {
       .collection("favourites")
       .findOne({ homeId: this.homeId })
       .then((existingFav) => {
-        if (existingFav) {
-          return Promise.resolve();
-        } else {
+        if (!existingFav) {
           return db.collection("favourites").insertOne(this);
+        } else {
+          return Promise.resolve();
         }
       });
   }

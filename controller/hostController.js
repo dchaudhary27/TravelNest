@@ -10,7 +10,7 @@ exports.getEditHome = (req, res, next) => {
   const homeId = req.params.homeId;
   const editMode = req.query.edit === "true";
 
-  Home.findByID(homeId).then((home) => {
+  Home.findById(homeId).then((home) => {
     if (!home) {
       return res.redirect("/host/host-home-list");
     }
@@ -24,7 +24,7 @@ exports.getEditHome = (req, res, next) => {
   });
 };
 exports.gethosthomeList = (req, res, next) => {
-  Home.fetchHomes().then((registeredHomes) => {
+  Home.find().then((registeredHomes) => {
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Host Home List",
@@ -35,14 +35,14 @@ exports.gethosthomeList = (req, res, next) => {
 exports.postAddHome = (req, res, next) => {
   const { homeName, rentPerDay, address, rating, photo, description } =
     req.body;
-  const home = new Home(
+  const home = new Home({
     homeName,
     rentPerDay,
     address,
     rating,
     photo,
-    description
-  );
+    description,
+  });
   home.save().then(() => {
     console.log("Home Added Successfully");
   });
@@ -52,20 +52,28 @@ exports.postAddHome = (req, res, next) => {
 exports.postEditHome = (req, res, next) => {
   const { id, homeName, rentPerDay, address, rating, photo, description } =
     req.body;
-  const home = new Home(
-    homeName,
-    rentPerDay,
-    address,
-    rating,
-    photo,
-    description,
-    id
-  );
+  Home.findById(id)
+    .then((home) => {
+      home.homeName = homeName;
+      home.rentPerDay = rentPerDay;
+      home.address = address;
+      home.rating = rating;
+      home.photo = photo;
+      home.description = description;
 
-  home.save().then(() => {
-    console.log("Home Updated Successfully");
-  });
-  res.redirect("/host/host-home-list");
+      home
+        .save()
+        .then(() => {
+          console.log("Home Updated Successfully");
+        })
+        .catch((err) => {
+          console.log("Error updating home:", err);
+        });
+      res.redirect("/host/host-home-list");
+    })
+    .catch((err) => {
+      console.log("Error finding home for update:", err);
+    });
 };
 
 exports.postDeleteHome = (req, res, next) => {
