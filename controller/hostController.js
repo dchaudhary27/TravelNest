@@ -78,8 +78,9 @@ exports.postEditHome = (req, res, next) => {
 
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.homeId;
-  Home.deleteByID(homeId)
+  Home.findByIdAndDelete(homeId)
     .then(() => {
+      console.log("Home Deleted Successfully");
       res.redirect("/host/host-home-list");
     })
     .catch((err) => {
