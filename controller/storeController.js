@@ -23,31 +23,35 @@ exports.getBookings = (req, res, next) => {
     pageTitle: "Bookings",
   });
 };
+
 exports.getFavouritesList = (req, res, next) => {
-  Favourites.getFavourites().then((favourites) => {
-    favourites = favourites.map((fav) => fav.homeId);
-    Home.find().then((registeredHomes) => {
-      const favouriteHomes = registeredHomes.filter((home) =>
-        favourites.includes(home._id.toString())
-      );
+  Favourites.find()
+    .populate("homeId")
+    .then((favourites) => {
+      const favouriteHomes = favourites.map((fav) => fav.homeId);
       res.render("store/favourite-list", {
         favouriteHomes: favouriteHomes,
         pageTitle: "My Favourites",
       });
     });
-  });
 };
 
 exports.postAddToFavourites = (req, res, next) => {
-  const favourite = new Favourites(req.body.homeId);
-  favourite
-    .save()
-    .then("Home added to Favourite Successfully!!")
+  const homeId = req.body.homeId;
+  Favourites.findOne({ homeId: homeId })
+    .then((existingFavourite) => {
+      if (existingFavourite) {
+        return console.log("Home already in Favourites!!");
+      }
+      const favourite = new Favourites({ homeId: homeId });
+      console.log("Home added to Favourites Successfully!!");
+      return favourite.save();
+    })
+    .then(() => {
+      res.redirect("/favourites");
+    })
     .catch((err) => {
       console.log("Error adding to favourites:", err);
-    })
-    .finally(() => {
-      res.redirect("/favourites");
     });
 };
 
@@ -69,7 +73,7 @@ exports.getHomeDetails = (req, res, next) => {
 exports.postRemoveFromFavourites = (req, res, next) => {
   const homeId = req.params.homeId;
   console.log("Deleting from favourites Home ID:", homeId);
-  Favourites.deleteFavouriteByID(homeId)
+  Favourites.findOneAndDelete({ homeId: homeId })
     .then(() => {
       console.log("Home removed from Favourites Successfully!!", homeId);
     })
