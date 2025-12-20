@@ -5,7 +5,7 @@ exports.getindex = (req, res, next) => {
   Home.find().then((registeredHomes) => {
     res.render("store/index", {
       registeredHomes: registeredHomes,
-      pageTitle: "Airbnb Home",
+      pageTitle: "TravelNest Home",
     });
   });
 };
