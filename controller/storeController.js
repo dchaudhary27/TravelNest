@@ -7,7 +7,7 @@ exports.getindex = (req, res, next) => {
     res.render("store/index", {
       registeredHomes: registeredHomes,
       pageTitle: "TravelNest Home",
-      isLoggedIn: req.isLoggedIn,
+      isLoggedIn: req.session.isLoggedIn,
     });
   });
 };
@@ -16,7 +16,7 @@ exports.getHomeList = (req, res, next) => {
     res.render("store/home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Home list",
-      isLoggedIn: req.isLoggedIn,
+      isLoggedIn: req.session.isLoggedIn,
     })
   );
 };
@@ -24,7 +24,7 @@ exports.getHomeList = (req, res, next) => {
 exports.getBookings = (req, res, next) => {
   res.render("store/bookings", {
     pageTitle: "Bookings",
-    isLoggedIn: req.isLoggedIn,
+    isLoggedIn: req.session.isLoggedIn,
   });
 };
 
@@ -35,7 +35,7 @@ exports.getFavouritesList = (req, res, next) => {
       const favouriteHomes = favourites.map((fav) => fav.homeId);
       res.render("store/favourite-list", {
         favouriteHomes: favouriteHomes,
-        isLoggedIn: req.isLoggedIn,
+        isLoggedIn: req.session.isLoggedIn,
         pageTitle: "My Favourites",
       });
     });
@@ -70,7 +70,7 @@ exports.getHomeDetails = (req, res, next) => {
       res.render("store/home-details", {
         home: home,
         pageTitle: "Home Details",
-        isLoggedIn: req.isLoggedIn,
+        isLoggedIn: req.session.isLoggedIn,
       });
     }
   });
