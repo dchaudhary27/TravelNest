@@ -3,6 +3,7 @@ exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
     pageTitle: "Add Home to traveNest",
     activeTab: "add-home",
+    isLoggedIn: req.isLoggedIn,
     editMode: false,
   });
 };
@@ -19,6 +20,7 @@ exports.getEditHome = (req, res, next) => {
       pageTitle: "Edit Home to travelNest",
       activeTab: "host-home-list",
       editMode: editMode,
+      isLoggedIn: req.isLoggedIn,
       homeId: homeId,
     });
   });
@@ -27,6 +29,7 @@ exports.gethosthomeList = (req, res, next) => {
   Home.find().then((registeredHomes) => {
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
+      isLoggedIn: req.isLoggedIn,
       pageTitle: "Host Home List",
     });
   });

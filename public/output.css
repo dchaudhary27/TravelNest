@@ -204,35 +204,11 @@
   .fixed {
     position: fixed;
   }
-  .static {
-    position: static;
-  }
   .top-2 {
     top: calc(var(--spacing) * 2);
   }
-  .top-3 {
-    top: calc(var(--spacing) * 3);
-  }
-  .top-4 {
-    top: calc(var(--spacing) * 4);
-  }
-  .right-2 {
-    right: calc(var(--spacing) * 2);
-  }
-  .right-3 {
-    right: calc(var(--spacing) * 3);
-  }
   .right-4 {
     right: calc(var(--spacing) * 4);
-  }
-  .z-25 {
-    z-index: 25;
-  }
-  .z-50 {
-    z-index: 50;
-  }
-  .float-right {
-    float: right;
   }
   .container {
     width: 100%;
@@ -402,9 +378,6 @@
   .bg-blue-600 {
     background-color: var(--color-blue-600);
   }
-  .bg-blue-700 {
-    background-color: var(--color-blue-700);
-  }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
   }
@@ -434,9 +407,6 @@
   }
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
-  }
-  .px-5 {
-    padding-inline: calc(var(--spacing) * 5);
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
@@ -563,20 +533,6 @@
   .peer-checked\/5\:text-yellow-500 {
     &:is(:where(.peer\/5):checked ~ *) {
       color: var(--color-yellow-500);
-    }
-  }
-  .hover\:bg-blue-400 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-blue-400);
-      }
-    }
-  }
-  .hover\:bg-blue-500 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-blue-500);
-      }
     }
   }
   .hover\:bg-blue-600 {

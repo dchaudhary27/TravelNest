@@ -8,7 +8,8 @@
         >
           TravelNest</a
         >
-      </li>
+        </li>
+      <% if (isLoggedIn) { %>
       <li>
         <a
           href="/home-list"
@@ -46,6 +47,7 @@
           >Favourites</a
         >
       </li>
+      <% } %>
     <li class="ml-auto">
       <a
         href="/login"

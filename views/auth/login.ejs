@@ -2,7 +2,7 @@
     </head>
 
     <body>
-        <%- include('../partials/nav') , activeTab = "login" %>
+        <%- include('../partials/nav') , {activeTab: "login"} %>
             <main class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md">
                 <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Welcome to TravelNest</h1>
                 <form action="/login" method="POST" class="max-w-md mx-auto">

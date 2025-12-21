@@ -17,10 +17,25 @@ app.set("views", "views");
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  console.log(req.get("Cookie"));
+  req.isLoggedIn = req.get("Cookie")
+    ? req.get("Cookie").split("=")[1] === "true"
+    : false;
+  next();
+});
+
+app.use(authRouter);
 app.use("/", storeRouter);
+app.use("/host", (req, res, next) => {
+  if (req.cookies.isLoggedIn) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+});
 app.use("/host", hostRouter);
 app.use(express.static("public"));
-app.use(authRouter);
 
 app.use(error404);
 
