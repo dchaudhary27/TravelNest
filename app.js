@@ -28,10 +28,10 @@ app.use((req, res, next) => {
 app.use(authRouter);
 app.use("/", storeRouter);
 app.use("/host", (req, res, next) => {
-  if (req.cookies.isLoggedIn) {
-    next();
-  } else {
+  if (!req.cookies.isLoggedIn) {
     res.redirect("/login");
+  } else {
+    next();
   }
 });
 app.use("/host", hostRouter);
