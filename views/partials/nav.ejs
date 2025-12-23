@@ -48,26 +48,33 @@
           >Favourites</a
         >
       </li>
-      <% } %> <% if (!isLoggedIn) { %>
-      <li class="ml-auto">
-        <a
-          href="/login"
-          class="fixed right-4 top-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 <%= typeof activeTab !== 'undefined' && activeTab === 'login' ? 'bg-blue-400' : '' %>"
-        >
-          Login
-        </a>
-      </li>
-      <% } else { %>
-      <form action="/logout" method="POST" class="ml-auto">
-        <button
-          type="submit"
-          class="fixed right-4 top-2 px-4 py-2 bg-gray-800 text-white font-medium rounded-md hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400"
-        >
-          Logout
-        </button>
-      </form>
-      <% } %>
-    </ul>
+    <% } %> <% if (!isLoggedIn) { %>
+    <li>
+      <a
+        href="/login"
+        class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'login' ? 'bg-red-400' : '' %>"
+      >
+        Sign In
+      </a>
+    </li>
+    <li class="ml-auto">
+      <a
+        href="/signup"
+        class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'signup' ? 'bg-red-400' : '' %>"
+      >
+        Sign Up
+      </a>
+    </li>
+    <% } else { %>
+    <form action="/logout" method="POST" class="ml-auto">
+      <button
+        type="submit"
+        class="hover:bg-red-400 py-2 px-4 rounded transition duration-300"
+      >
+        Sign Out
+      </button>
+    </form>
+    <% } %></ul>
   </nav>
 =======
 <header class="bg-gradient-to-r from-red-600 to-red-500 text-white shadow-lg">
