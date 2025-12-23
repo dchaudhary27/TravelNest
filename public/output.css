@@ -988,6 +988,21 @@
     }
   }
   .hover\:from-pink-600 {
+  .hover\:bg-red-50 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-red-50);
+      }
+    }
+  }
+  .hover\:bg-red-300 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-red-300);
+      }
+    }
+  }
+  .hover\:bg-red-400 {
     &:hover {
       @media (hover: hover) {
         --tw-gradient-from: var(--color-pink-600);
