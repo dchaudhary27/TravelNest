@@ -15,3 +15,10 @@ exports.postLogout = (req, res, next) => {
     res.redirect("/login");
   });
 };
+
+exports.getSignup = (req, res, next) => {
+  res.render("auth/signup", {
+    pageTitle: "Signup for TravelNest",
+    isLoggedIn: false,
+  });
+};
