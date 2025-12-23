@@ -22,3 +22,8 @@ exports.getSignup = (req, res, next) => {
     isLoggedIn: false,
   });
 };
+
+exports.postSignup = (req, res, next) => {
+  console.log("User Signed Up:", req.body);
+  res.redirect("/login");
+};
