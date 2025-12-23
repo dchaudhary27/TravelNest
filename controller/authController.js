@@ -15,3 +15,18 @@ exports.postLogout = (req, res, next) => {
     res.redirect("/login");
   });
 };
+<<<<<<< Updated upstream
+=======
+
+exports.getSignup = (req, res, next) => {
+  res.render("auth/signup", {
+    pageTitle: "Signup for TravelNest",
+    isLoggedIn: false,
+  });
+};
+
+exports.postSignup = (req, res, next) => {
+  console.log("User Signed Up:", req.body);
+  res.redirect("/login");
+};
+>>>>>>> Stashed changes

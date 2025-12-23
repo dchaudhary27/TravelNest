@@ -1,58 +1,73 @@
 <%- include('../partials/head') %>
     </head>
 
-    <body>
+    <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
         <%- include('../partials/nav', { activeTab: 'host-home-list' }) %>
-            <main class="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 max-w-xl md:max-w-3xl lg:max-w-5xl">
-                <h2 class="text-3xl text-red-500 font-bold text-center mb-6">
-                    Here are our registered homes:
-                </h2>
+            <main class="container mx-auto px-4 py-12">
+                <div class="max-w-6xl mx-auto">
+                    <!-- Header Section -->
+                    <div class="mb-12 text-center">
+                        <h2 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent mb-3">
+                            Your Registered Homes
+                        </h2>
+                        <p class="text-gray-600 text-lg">Manage and showcase your properties</p>
+                    </div>
 
+                    <!-- Grid Container -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
+                        <% registeredHomes.forEach(home=> { %>
 
-                    <% registeredHomes.forEach(home=> { %>
+                            <div class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden">
+                                
+                                <!-- Image Container -->
+                                <div class="relative overflow-hidden h-56 bg-gray-200">
+                                    <img src="<%= home.photo %>" alt="<%= home.homeName %>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                </div>
 
-                        <div
-                            class="max-w-sm bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
+                                <!-- Content Container -->
+                                <div class="p-6 space-y-4">
+                                    <h3 class="text-2xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
+                                        <%= home.homeName %>
+                                    </h3>
+                                    
+                                    <p class="text-gray-500 text-sm flex items-start">
+                                        <span class="mr-2">📍</span>
+                                        <%= home.address %>
+                                    </p>
+                                    
+                                    <div class="border-t pt-4">
+                                        <p class="text-blue-600 font-bold text-2xl">$<%= home.rentPerDay %><span class="text-sm text-gray-600">/night</span></p>
+                                    </div>
 
-                            <img src=<%= home.photo%> alt="<%= home.houseName %>" class="w-full h-48 object-cover">
-
-                            <div class="p-5 space-y-3">
-                                <h2 class="text-2xl font-bold text-gray-800">
-                                    <%= home.homeName %>
-                                </h2>
-                                <p class="text-gray-500 text-sm">
-                                    <%= home.address %>
-                                </p>
-                                <p class="text-blue-600 font-semibold text-xl">$<%= home.rentPerDay %> / night</p>
-
-                                <!-- Rating -->
-                                <div class="flex items-center space-x-1">
-                                    <% for (let i=1; i <=5; i++) { %>
-                                        <span class="text-xl <%= i <= home.rating ? ' text-yellow-500' : 'text-gray-300'
-            %>">★</span>
+                                    <!-- Rating -->
+                                    <div class="flex items-center space-x-1">
+                                        <% for (let i=1; i <=5; i++) { %>
+                                            <span class="text-lg <%= i <= home.rating ? 'text-yellow-400' : 'text-gray-300' %>">★</span>
                                         <% } %>
-                                </div>
-                                <div class="flex gap-2">
-                                    <a href="/host/edit-home/<%= home._id %>/?edit=true"
-                                        class="flex-1 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 text-center">Edit
-                                    </a>
-                                    <form action="/host/delete-home/<%= home._id %>" method="POST" class="flex-1">
-                                        <button type="submit"
-                                            class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300">Delete</button>
-                                    </form>
-                                </div>
+                                        <span class="text-sm text-gray-500 ml-2">(<%= home.rating %>/5)</span>
+                                    </div>
 
+                                    <!-- Action Buttons -->
+                                    <div class="flex gap-3 pt-4">
+                                        <a href="/host/edit-home/<%= home._id %>/?edit=true"
+                                            class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-2 px-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 text-center shadow-md hover:shadow-lg">
+                                            Edit
+                                        </a>
+                                        <form action="/host/delete-home/<%= home._id %>" method="POST" class="flex-1">
+                                            <button type="submit"
+                                                class="w-full bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md hover:shadow-lg">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-
-
-                        </div>
 
                         <% }) %>
 
+                    </div>
                 </div>
-
             </main>
     </body>
 

@@ -1,0 +1,94 @@
+<%- include('../partials/head') %>
+</head>
+
+<body>
+    <%- include('../partials/nav') , {activeTab: "Sign Up"} %>
+    
+    <main class="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-red-500 to-orange-500 px-6 py-8">
+                <h1 class="text-3xl font-bold text-white text-center">Join TravelNest</h1>
+                <p class="text-red-100 text-center mt-2">Create your account to get started</p>
+            </div>
+
+            <!-- Form -->
+            <form action="/signup" method="POST" class="p-8 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <input 
+                        type="text" 
+                        name="firstName" 
+                        placeholder="First Name" 
+                        required
+                        class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" 
+                    />
+                    <input 
+                        type="text" 
+                        name="lastName" 
+                        placeholder="Last Name" 
+                        required
+                        class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" 
+                    />
+                </div>
+                
+                <input 
+                    type="email" 
+                    name="email" 
+                    placeholder="Email Address" 
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" 
+                />
+                
+                <input 
+                    type="password" 
+                    name="password" 
+                    placeholder="Password" 
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" 
+                />
+                
+                <input 
+                    type="password" 
+                    name="confirmPassword" 
+                    placeholder="Confirm Password" 
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" 
+                />
+                
+                <select 
+                    name="userType" 
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition bg-white"
+                >
+                    <option value="">Select Account Type</option>
+                    <option value="guest">Traveler</option>
+                    <option value="host">Host</option>
+                </select>
+                
+                <div class="flex items-start pt-2">
+                    <input 
+                        type="checkbox" 
+                        name="terms" 
+                        required 
+                        class="mt-1 mr-3 w-4 h-4 text-red-500 rounded focus:ring-2 focus:ring-red-500"
+                    />
+                    <label class="text-sm text-gray-600">I agree to the <a href="#" class="text-red-500 font-semibold hover:underline">Terms and Conditions</a></label>
+                </div>
+                
+                <button 
+                    type="submit"
+                    class="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold py-3 rounded-lg hover:from-red-600 hover:to-orange-600 transition duration-300 transform hover:scale-105 mt-6"
+                >
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="bg-gray-50 px-8 py-4 text-center border-t border-gray-200">
+                <p class="text-gray-600 text-sm">Already have an account? <a href="/login" class="text-red-500 font-semibold hover:underline">Sign In</a></p>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

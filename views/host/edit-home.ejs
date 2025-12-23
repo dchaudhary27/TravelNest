@@ -3,60 +3,117 @@
 
     <body>
         <%- include('../partials/nav') , activeTab %>
-            <main class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md">
-                <h1 class="text-3xl font-bold mb-6 text-center text-gray-800"><%= editMode ? "Edit" : "Register" %>Your Home on TravelNest</h1>
-                <form action="/host/<%= editMode ? "edit-home" : "add-home"%>" method="POST" class="max-w-md mx-auto">
-                    <input type="hidden" name="id" value="<%= editMode ? home._id : '' %>"/>
-                    <input type="text" value = "<%= editMode? home.homeName: '' %>" name="homeName" placeholder="Enter your House Name"
-                        class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" />
-                    <input type="number" value = "<%= editMode? home.rentPerDay: '' %>"  name="rentPerDay" placeholder="Enter Rent Per Day"
-                        class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" />
-                    <input type="text" value = "<%= editMode? home.address: '' %>"  name="address" placeholder="Enter Address"
-                        class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" />
-            <div>
-                <label class="block mb-2 text-gray-600 font-semibold">Your Rating:</label>
-                
-                    <div class="flex justify-between w-48 mx-auto">
+        <main class="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 py-12 px-4">
+            <div class="max-w-2xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                        <%= editMode ? "Edit Your Home" : "Register Your Home on TravelNest" %>
+                    </h1>
+                    <p class="text-gray-600">Share your space with travelers around the world</p>
+                </div>
 
-                        <input type="radio" name="rating" value="1" id="rate1" class="hidden peer/1">
-                        <label for="rate1"
-                            class="text-3xl cursor-pointer text-gray-400 peer-checked/1:text-yellow-500">★</label>
+                <!-- Form Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+                    <form action="/host/<%= editMode ? "edit-home" : "add-home"%>" method="POST">
+                        <input type="hidden" name="id" value="<%= editMode ? home._id : '' %>"/>
 
-                        <input type="radio" name="rating" value="2" id="rate2" class="hidden peer/2">
-                        <label for="rate2"
-                            class="text-3xl cursor-pointer text-gray-400 peer-checked/2:text-yellow-500">★</label>
+                        <!-- Home Name -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Home Name</label>
+                            <input type="text" value="<%= editMode? home.homeName: '' %>" name="homeName" 
+                                placeholder="e.g., Cozy Beach Villa" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" />
+                        </div>
 
-                        <input type="radio" name="rating" value="3" id="rate3" class="hidden peer/3">
-                        <label for="rate3"
-                            class="text-3xl cursor-pointer text-gray-400 peer-checked/3:text-yellow-500">★</label>
+                        <!-- Rent Per Day -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Rent Per Day</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-3 text-gray-500 font-semibold">$</span>
+                                <input type="number" value="<%= editMode? home.rentPerDay: '' %>" name="rentPerDay" 
+                                    placeholder="0.00" required
+                                    class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" />
+                            </div>
+                        </div>
 
-                        <input type="radio" name="rating" value="4" id="rate4" class="hidden peer/4">
-                        <label for="rate4"
-                            class="text-3xl cursor-pointer text-gray-400 peer-checked/4:text-yellow-500">★</label>
+                        <!-- Address -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Address</label>
+                            <input type="text" value="<%= editMode? home.address: '' %>" name="address" 
+                                placeholder="e.g., 123 Main St, City, Country" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" />
+                        </div>
 
-                        <input type="radio" name="rating" value="5" id="rate5" class="hidden peer/5">
-                        <label for="rate5"
-                            class="text-3xl cursor-pointer text-gray-400 peer-checked/5:text-yellow-500">★</label>
-                    </div>
-               
+                        <!-- Rating -->
+                        <div class="mb-8">
+                            <label class="block text-sm font-semibold text-gray-700 mb-4">Your Rating</label>
+                            <div class="flex justify-center gap-4" id="ratingContainer">
+                                <% for (let i = 1; i <= 5; i++) { %>
+                                    <input type="radio" name="rating" value="<%= i %>" id="rate<%= i %>" class="hidden">
+                                    <label for="rate<%= i %>" 
+                                        class="text-4xl cursor-pointer text-gray-300 hover:text-yellow-400 transition transform hover:scale-110 star-label"
+                                        data-value="<%= i %>">★</label>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <script>
+                            const stars = document.querySelectorAll('#ratingContainer .star-label');
+                            const inputs = document.querySelectorAll('#ratingContainer input[type="radio"]');
+                            
+                            stars.forEach(star => {
+                                star.addEventListener('click', function() {
+                                    const value = this.getAttribute('data-value');
+                                    document.getElementById('rate' + value).checked = true;
+                                    updateStarDisplay(value);
+                                });
+                                
+                                star.addEventListener('mouseover', function() {
+                                    const value = this.getAttribute('data-value');
+                                    updateStarDisplay(value);
+                                });
+                            });
+                            
+                            document.getElementById('ratingContainer').addEventListener('mouseleave', function() {
+                                const checked = document.querySelector('#ratingContainer input[type="radio"]:checked');
+                                updateStarDisplay(checked ? checked.value : 0);
+                            });
+                            
+                            function updateStarDisplay(value) {
+                                stars.forEach(star => {
+                                    const starValue = star.getAttribute('data-value');
+                                    star.classList.toggle('text-yellow-500', starValue <= value);
+                                    star.classList.toggle('text-gray-300', starValue > value);
+                                });
+                            }
+                        </script>
+
+                        <!-- Photo URL -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Photo URL</label>
+                            <input type="text" value="<%= editMode? home.photo: '' %>" name="photo" 
+                                placeholder="https://example.com/image.jpg" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition" />
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-8">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                            <textarea name="description" placeholder="Describe your home, amenities, and what makes it special..." 
+                                rows="5" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition resize-none"><%= editMode ? home.description : '' %></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" 
+                            class="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-lg font-semibold hover:from-red-600 hover:to-red-700 transition duration-300 transform hover:scale-105 shadow-md">
+                            <%= editMode ? "Update Home" : "Register Home" %>
+                        </button>
+                    </form>
+                </div>
             </div>
-
-                    <div>
-                        <label class="block mb-2 text-gray-600 font-semibold">Upload a Photo:</label>
-                        <input type="text" value = "<%= editMode? home.photo: '' %>"  name="photo" placeholder="Enter Photo URL"
-                            class=" block w-full text-gray-700 border border-gray-300 rounded-lg p-2 bg-gray-50">
-                    </div>
-
-                    <div>
-                        <textarea name="description" placeholder="Describe your home"
-                            class="w-full px-4 py-2 mt-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"><%= editMode ? home.description : '' %></textarea>
-                    </div>
-
-                    <br />
-                    <input type="submit" value="<%= editMode ? "Update Home" : "Register Home" %>"
-                        class="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300" />
-                </form>
-            </main>
+        </main>
     </body>
 
     </html>
