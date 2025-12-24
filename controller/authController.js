@@ -15,11 +15,6 @@ exports.postLogout = (req, res, next) => {
     res.redirect("/login");
   });
 };
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> feature/auth
 
 exports.getSignup = (req, res, next) => {
   res.render("auth/signup", {
@@ -27,12 +22,8 @@ exports.getSignup = (req, res, next) => {
     isLoggedIn: false,
   });
 };
-<<<<<<< HEAD
 
 exports.postSignup = (req, res, next) => {
   console.log("User Signed Up:", req.body);
   res.redirect("/login");
 };
->>>>>>> Stashed changes
-=======
->>>>>>> feature/auth

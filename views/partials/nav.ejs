@@ -1,82 +1,3 @@
-<<<<<<< Updated upstream
-<header class="bg-red-500 text-white p-4 shadow-md">
-  <nav class="container mx-auto flex justify-between items-center">
-    <ul class="flex space-x-4">
-      <li>
-        <a
-          href="/"
-          class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'TravelNest' ? 'bg-red-400' : '' %>"
-        >
-          TravelNest</a
-        >
-      </li>
-      <% if (isLoggedIn) { %>
-      <li>
-        <a
-          href="/home-list"
-          class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'home' ? 'bg-red-400' : '' %>"
-        >
-          Home</a
-        >
-      </li>
-      <li>
-        <a
-          href="/host/host-home-list"
-          class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'host-home-list' ? 'bg-red-400' : '' %>"
-        >
-          Host Home List</a
-        >
-      </li>
-      <li>
-        <a
-          href="/host/add-home"
-          class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'add-home' ? 'bg-red-400' : '' %>"
-          >Add Home</a
-        >
-      </li>
-      <li>
-        <a
-          href="/bookings"
-          class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'bookings' ? 'bg-red-400' : '' %>"
-          >Bookings</a
-        >
-      </li>
-      <li>
-        <a
-          href="/favourites"
-          class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'favourite-list' ? 'bg-red-400' : '' %>"
-          >Favourites</a
-        >
-      </li>
-    <% } %> <% if (!isLoggedIn) { %>
-    <li>
-      <a
-        href="/login"
-        class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'login' ? 'bg-red-400' : '' %>"
-      >
-        Sign In
-      </a>
-    </li>
-    <li class="ml-auto">
-      <a
-        href="/signup"
-        class="hover:bg-red-400 py-2 px-4 rounded transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'signup' ? 'bg-red-400' : '' %>"
-      >
-        Sign Up
-      </a>
-    </li>
-    <% } else { %>
-    <form action="/logout" method="POST" class="ml-auto">
-      <button
-        type="submit"
-        class="hover:bg-red-400 py-2 px-4 rounded transition duration-300"
-      >
-        Sign Out
-      </button>
-    </form>
-    <% } %></ul>
-  </nav>
-=======
 <header class="bg-gradient-to-r from-red-600 to-red-500 text-white shadow-lg">
     <nav class="container mx-auto flex justify-between items-center px-6 py-4">
         <div class="flex items-center space-x-8">
@@ -159,5 +80,4 @@
             <% } %>
         </div>
     </nav>
->>>>>>> Stashed changes
 </header>

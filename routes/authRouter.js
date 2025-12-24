@@ -11,9 +11,6 @@ authRouter.post("/logout", authController.postLogout);
 
 authRouter.get("/signup", authController.getSignup);
 
-<<<<<<< HEAD
 authRouter.post("/signup", authController.postSignup);
 
-=======
->>>>>>> feature/auth
 module.exports = authRouter;
