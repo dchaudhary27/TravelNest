@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+
 const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
 const mongoose = require("mongoose");
@@ -42,11 +43,11 @@ app.use(authRouter);
 app.use("/", storeRouter);
 app.use("/host", (req, res, next) => {
   if (!req.session.isLoggedIn) {
-    res.redirect("/login");
-  } else {
-    next();
+    return res.redirect("/login");
   }
+  next();
 });
+
 app.use("/host", hostRouter);
 app.use(express.static("public"));
 
