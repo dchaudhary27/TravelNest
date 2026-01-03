@@ -1,4 +1,5 @@
 const { check, validationResult } = require("express-validator");
+const bcrypyt = require("bcryptjs");
 const User = require("../Model/user");
 exports.getLogin = (req, res, next) => {
   res.render("auth/login", {
@@ -89,15 +90,7 @@ exports.postSignup = [
       return true;
     }),
   (req, res, next) => {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword,
-      userType,
-      terms,
-    } = req.body;
+    const { firstName, lastName, email, password, userType, terms } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).render("auth/signup", {
@@ -114,18 +107,19 @@ exports.postSignup = [
         },
       });
     }
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      password,
-      userType,
-    });
-
-    newUser
-      .save()
+    bcrypyt
+      .hash(password, 12)
+      .then((hashedPassword) => {
+        const user = new User({
+          firstName,
+          lastName,
+          email,
+          password: hashedPassword,
+          userType,
+        });
+        return user.save();
+      })
       .then(() => {
-        console.log("User registered successfully.");
         res.redirect("/login");
       })
       .catch((err) => {
