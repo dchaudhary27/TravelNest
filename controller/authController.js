@@ -1,4 +1,5 @@
 const { check, validationResult } = require("express-validator");
+const User = require("../Model/user");
 exports.getLogin = (req, res, next) => {
   res.render("auth/login", {
     pageTitle: "Login to TravelNest",
@@ -108,12 +109,39 @@ exports.postSignup = [
           lastName,
           email,
           password,
-          confirmPassword,
           userType,
           terms,
         },
       });
     }
-    res.redirect("/login");
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password,
+      userType,
+    });
+
+    newUser
+      .save()
+      .then(() => {
+        console.log("User registered successfully.");
+        res.redirect("/login");
+      })
+      .catch((err) => {
+        return res.status(422).render("auth/signup", {
+          pageTitle: "Signup for TravelNest",
+          isLoggedIn: false,
+          errors: [err.message],
+          oldInput: {
+            firstName,
+            lastName,
+            email,
+            password,
+            userType,
+            terms,
+          },
+        });
+      });
   },
 ];
