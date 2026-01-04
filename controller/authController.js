@@ -40,6 +40,8 @@ exports.postLogin = async (req, res, next) => {
     });
   }
   req.session.isLoggedIn = true;
+  req.session.user = user;
+  await req.session.save();
   res.redirect("/");
 };
 
