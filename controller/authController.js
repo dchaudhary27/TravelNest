@@ -5,10 +5,40 @@ exports.getLogin = (req, res, next) => {
   res.render("auth/login", {
     pageTitle: "Login to TravelNest",
     isLoggedIn: false,
+    oldInput: {
+      email: "",
+      password: "",
+    },
+    errors: [],
   });
 };
 
-exports.postLogin = (req, res, next) => {
+exports.postLogin = async (req, res, next) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(422).render("auth/login", {
+      pageTitle: "Login to TravelNest",
+      isLoggedIn: false,
+      errors: ["User does not exist. Please sign up first."],
+      oldInput: {
+        email,
+        password,
+      },
+    });
+  }
+  const doMatch = await bcrypyt.compare(password, user.password);
+  if (!doMatch) {
+    return res.status(422).render("auth/login", {
+      pageTitle: "Login to TravelNest",
+      isLoggedIn: false,
+      errors: ["Invalid password. Please try again."],
+      oldInput: {
+        email,
+        password,
+      },
+    });
+  }
   req.session.isLoggedIn = true;
   res.redirect("/");
 };
