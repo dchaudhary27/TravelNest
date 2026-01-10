@@ -1,5 +1,5 @@
 const { check, validationResult } = require("express-validator");
-const bcrypyt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const User = require("../Model/user");
 exports.getLogin = (req, res, next) => {
   res.render("auth/login", {
@@ -10,6 +10,7 @@ exports.getLogin = (req, res, next) => {
       password: "",
     },
     errors: [],
+    user: {},
   });
 };
 
@@ -18,31 +19,35 @@ exports.postLogin = async (req, res, next) => {
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(422).render("auth/login", {
-      pageTitle: "Login to TravelNest",
+      pageTitle: "Login",
+
       isLoggedIn: false,
-      errors: ["User does not exist. Please sign up first."],
-      oldInput: {
-        email,
-        password,
-      },
+      errors: ["User does not exist"],
+      oldInput: { email },
+      user: {},
     });
   }
-  const doMatch = await bcrypyt.compare(password, user.password);
-  if (!doMatch) {
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
     return res.status(422).render("auth/login", {
-      pageTitle: "Login to TravelNest",
+      pageTitle: "Login",
+
       isLoggedIn: false,
-      errors: ["Invalid password. Please try again."],
-      oldInput: {
-        email,
-        password,
-      },
+      errors: ["Invalid Password"],
+      oldInput: { email },
+      user: {},
     });
   }
+
   req.session.isLoggedIn = true;
-  req.session.user = user;
-  await req.session.save();
-  res.redirect("/");
+  req.session.user = { _id: user._id.toString(), userType: user.userType };
+  await req.session.save((err) => {
+    if (err) {
+      console.log(err);
+    }
+    res.redirect("/");
+  });
 };
 
 exports.postLogout = (req, res, next) => {
@@ -65,6 +70,8 @@ exports.getSignup = (req, res, next) => {
       terms: false,
     },
     errors: [],
+
+    user: {},
   });
 };
 
@@ -127,8 +134,8 @@ exports.postSignup = [
     if (!errors.isEmpty()) {
       return res.status(422).render("auth/signup", {
         pageTitle: "Signup for TravelNest",
-        isLoggedIn: false,
         errors: errors.array().map((err) => err.msg),
+        isLoggedIn: false,
         oldInput: {
           firstName,
           lastName,
@@ -137,6 +144,8 @@ exports.postSignup = [
           userType,
           terms,
         },
+
+        user: {},
       });
     }
     bcrypyt
@@ -157,8 +166,9 @@ exports.postSignup = [
       .catch((err) => {
         return res.status(422).render("auth/signup", {
           pageTitle: "Signup for TravelNest",
-          isLoggedIn: false,
+
           errors: [err.message],
+          isLoggedIn: false,
           oldInput: {
             firstName,
             lastName,
@@ -167,6 +177,8 @@ exports.postSignup = [
             userType,
             terms,
           },
+
+          user: {},
         });
       });
   },

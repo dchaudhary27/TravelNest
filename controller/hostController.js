@@ -1,9 +1,11 @@
 const Home = require("../Model/home");
+const user = require("../Model/user");
 exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
     pageTitle: "Add Home to traveNest",
     activeTab: "add-home",
     isLoggedIn: req.session.isLoggedIn,
+    user: req.session.user,
     editMode: false,
   });
 };
@@ -21,6 +23,7 @@ exports.getEditHome = (req, res, next) => {
       activeTab: "host-home-list",
       editMode: editMode,
       isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
       homeId: homeId,
     });
   });
@@ -30,6 +33,7 @@ exports.gethosthomeList = (req, res, next) => {
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
       isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
       pageTitle: "Host Home List",
     });
   });
@@ -46,9 +50,7 @@ exports.postAddHome = (req, res, next) => {
     photo,
     description,
   });
-  home.save().then(() => {
-    console.log("Home Added Successfully");
-  });
+  home.save().then(() => {});
   res.redirect("/host/host-home-list");
 };
 

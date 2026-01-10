@@ -10,6 +10,7 @@
             
             <% if (isLoggedIn) { %>
             <ul class="hidden md:flex space-x-1">
+                <%if( user && user.userType === "traveler"){%>
                 <li>
                     <a
                         href="/home-list"
@@ -18,22 +19,7 @@
                         Home
                     </a>
                 </li>
-                <li>
-                    <a
-                        href="/host/host-home-list"
-                        class="hover:bg-red-400 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'host-home-list' ? 'bg-red-400' : '' %>"
-                    >
-                        My Listings
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="/host/add-home"
-                        class="hover:bg-red-400 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'add-home' ? 'bg-red-400' : '' %>"
-                    >
-                        Add Home
-                    </a>
-                </li>
+               
                 <li>
                     <a
                         href="/bookings"
@@ -50,6 +36,24 @@
                         ❤️ Favourites
                     </a>
                 </li>
+                <%} else {%>
+                     <li>
+                    <a
+                        href="/host/host-home-list"
+                        class="hover:bg-red-400 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'host-home-list' ? 'bg-red-400' : '' %>"
+                    >
+                        My Listings
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="/host/add-home"
+                        class="hover:bg-red-400 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'add-home' ? 'bg-red-400' : '' %>"
+                    >
+                        Add Home
+                    </a>
+                </li>
+                <%}%>
             </ul>
             <% } %>
         </div>

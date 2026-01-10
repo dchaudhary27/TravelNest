@@ -1,6 +1,5 @@
 require("dotenv").config();
 const express = require("express");
-
 const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
 const mongoose = require("mongoose");
@@ -27,7 +26,7 @@ app.use(
   session({
     secret: "travelnest",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store,
   })
 );
@@ -50,7 +49,6 @@ app.use("/host", (req, res, next) => {
 
 app.use("/host", hostRouter);
 app.use(express.static("public"));
-
 app.use(error404);
 
 mongoose
