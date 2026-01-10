@@ -1,5 +1,5 @@
 const Home = require("../Model/home");
-const Favourites = require("../Model/favourites");
+const User = require("../Model/user");
 
 exports.getindex = (req, res, next) => {
   Home.find().then((registeredHomes) => {
@@ -30,37 +30,26 @@ exports.getBookings = (req, res, next) => {
   });
 };
 
-exports.getFavouritesList = (req, res, next) => {
-  Favourites.find()
-    .populate("homeId")
-    .then((favourites) => {
-      const favouriteHomes = favourites.map((fav) => fav.homeId);
-      res.render("store/favourite-list", {
-        favouriteHomes: favouriteHomes,
-        isLoggedIn: req.session.isLoggedIn,
-        user: req.session.user,
-        pageTitle: "My Favourites",
-      });
-    });
+exports.getFavouritesList = async (req, res, next) => {
+  const userId = req.session.user._id;
+  const user = await User.findById(userId).populate("favourites");
+  res.render("store/favourite-list", {
+    favouriteHomes: user.favourites,
+    isLoggedIn: req.session.isLoggedIn,
+    user: req.session.user,
+    pageTitle: "My Favourites",
+  });
 };
 
-exports.postAddToFavourites = (req, res, next) => {
+exports.postAddToFavourites = async (req, res, next) => {
   const homeId = req.body.homeId;
-  Favourites.findOne({ homeId: homeId })
-    .then((existingFavourite) => {
-      if (existingFavourite) {
-        return console.log("Home already in Favourites!!");
-      }
-      const favourite = new Favourites({ homeId: homeId });
-      console.log("Home added to Favourites Successfully!!");
-      return favourite.save();
-    })
-    .then(() => {
-      res.redirect("/favourites");
-    })
-    .catch((err) => {
-      console.log("Error adding to favourites:", err);
-    });
+  const userId = req.session.user._id;
+  const user = await User.findById(userId);
+  if (!user.favourites.includes(homeId)) {
+    user.favourites.push(homeId);
+    await user.save();
+  }
+  res.redirect("/favourites");
 };
 
 exports.getHomeDetails = (req, res, next) => {
@@ -80,17 +69,14 @@ exports.getHomeDetails = (req, res, next) => {
   });
 };
 
-exports.postRemoveFromFavourites = (req, res, next) => {
+exports.postRemoveFromFavourites = async (req, res, next) => {
   const homeId = req.params.homeId;
-  console.log("Deleting from favourites Home ID:", homeId);
-  Favourites.findOneAndDelete({ homeId: homeId })
-    .then(() => {
-      console.log("Home removed from Favourites Successfully!!", homeId);
-    })
-    .catch((err) => {
-      console.log("Error removing from favourites:", err);
-    })
-    .finally(() => {
-      res.redirect("/favourites");
-    });
+  const userId = req.session.user._id;
+  const user = await User.findById(userId);
+
+  if (user.favourites.includes(homeId)) {
+    user.favourites = user.favourites.filter((fav) => fav != homeId);
+    await user.save();
+  }
+  res.redirect("/favourites");
 };

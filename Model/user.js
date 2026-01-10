@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: "traveler",
   },
+  favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Home" }],
 });
 
 module.exports = mongoose.model("User", userSchema);

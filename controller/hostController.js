@@ -1,5 +1,5 @@
 const Home = require("../Model/home");
-const user = require("../Model/user");
+
 exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
     pageTitle: "Add Home to traveNest",
