@@ -20,7 +20,6 @@ exports.postLogin = async (req, res, next) => {
   if (!user) {
     return res.status(422).render("auth/login", {
       pageTitle: "Login",
-
       isLoggedIn: false,
       errors: ["User does not exist"],
       oldInput: { email },
@@ -32,7 +31,6 @@ exports.postLogin = async (req, res, next) => {
   if (!isMatch) {
     return res.status(422).render("auth/login", {
       pageTitle: "Login",
-
       isLoggedIn: false,
       errors: ["Invalid Password"],
       oldInput: { email },
