@@ -7,20 +7,24 @@
                 <div class="max-w-4xl mx-auto">
                     <!-- Header Section -->
                     <div class="mb-12 text-center">
-                        <h2 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent mb-3">
+                        <h2
+                            class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent mb-3">
                             <%= home.homeName %>
                         </h2>
                         <p class="text-gray-600 text-lg flex items-center justify-center">
-                            <span class="mr-2">📍</span><%= home.address %>
+                            <span class="mr-2">📍</span>
+                            <%= home.address %>
                         </p>
                     </div>
 
                     <!-- Content Card -->
-                    <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
+                    <div
+                        class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
                             <!-- Image -->
                             <div class="rounded-xl overflow-hidden h-96 bg-gray-200">
-                                <img src="<%= home.photo %>" alt="<%= home.homeName %>" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                <img src="<%= home.photo %>" alt="<%= home.homeName %>"
+                                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                             </div>
 
                             <!-- Details -->
@@ -34,28 +38,38 @@
 
                                 <div class="border-b pb-4">
                                     <h3 class="text-2xl font-bold text-gray-800 mb-2">Price</h3>
-                                    <p class="text-red-500 font-bold text-3xl">$<%= home.rentPerDay %><span class="text-sm text-gray-600">/night</span></p>
+                                    <p class="text-red-500 font-bold text-3xl">$<%= home.rentPerDay %><span
+                                                class="text-sm text-gray-600">/night</span></p>
                                 </div>
 
                                 <div class="border-b pb-4">
                                     <h3 class="text-2xl font-bold text-gray-800 mb-3">Rating</h3>
                                     <div class="flex items-center space-x-1">
                                         <% for (let i=1; i <=5; i++) { %>
-                                            <span class="text-2xl <%= i <= home.rating ? 'text-yellow-400' : 'text-gray-300' %>">★</span>
-                                        <% } %>
-                                        <span class="text-sm text-gray-500 ml-2">(<%= home.rating %>/5)</span>
+                                            <span
+                                                class="text-2xl <%= i <= home.rating ? 'text-yellow-400' : 'text-gray-300' %>">★</span>
+                                            <% } %>
+                                                <span class="text-sm text-gray-500 ml-2">(<%= home.rating %>/5)</span>
                                     </div>
                                 </div>
+                                <% if (home.houseRules) { %>
+                                    <div class="mt-4">
 
-                                <!-- Buttons -->
-                                <div class="flex gap-4 pt-4">
-                                    <button class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold py-3 px-4 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md hover:shadow-lg">
-                                        Book Now →
-                                    </button>
-                                    <div>
-                                        <%- include('../partials/favourite') %>
+                                        <a href="/rules/<%= home._id %>" class="text-red-500 underline">Download House
+                                            Rules (PDF)</a>
+
                                     </div>
-                                </div>
+                                    <% } %>
+                                        <!-- Buttons -->
+                                        <div class="flex gap-4 pt-4">
+                                            <button
+                                                class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold py-3 px-4 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md hover:shadow-lg">
+                                                Book Now →
+                                            </button>
+                                            <div>
+                                                <%- include('../partials/favourite') %>
+                                            </div>
+                                        </div>
                             </div>
                         </div>
                     </div>

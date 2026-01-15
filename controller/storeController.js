@@ -1,5 +1,6 @@
 const Home = require("../Model/home");
 const User = require("../Model/user");
+const rootDir = require("../util/pathutils");
 
 exports.getindex = (req, res, next) => {
   Home.find().then((registeredHomes) => {
@@ -80,3 +81,20 @@ exports.postRemoveFromFavourites = async (req, res, next) => {
   }
   res.redirect("/favourites");
 };
+
+exports.getHouseRules = [
+  (req, res, next) => {
+    if (!req.session.isLoggedIn) return res.redirect("/login");
+    next();
+  },
+  async (req, res) => {
+    try {
+      const home = await Home.findById(req.params.homeId);
+      if (!home || !home.houseRules)
+        return res.status(404).send("House rules not found");
+      res.download(home.houseRules);
+    } catch (err) {
+      res.status(500).send("Error downloading file");
+    }
+  },
+];

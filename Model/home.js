@@ -7,6 +7,7 @@ const homeSchema = new mongoose.Schema({
   rating: { type: Number, required: true },
   photo: { type: String },
   description: { type: String },
+  houseRules: { type: String },
 });
 
 module.exports = mongoose.model("Home", homeSchema);

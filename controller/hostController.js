@@ -39,51 +39,51 @@ exports.gethosthomeList = (req, res, next) => {
   });
 };
 
-exports.postAddHome = (req, res, next) => {
-  const { homeName, rentPerDay, address, rating, description } = req.body;
-  if (!req.file) {
-    return res.status(422).send("Image file is required.");
+exports.postAddHome = async (req, res, next) => {
+  try {
+    const { homeName, rentPerDay, address, rating, description } = req.body;
+    const photo = req.files.photo?.[0]?.path || null;
+    const houseRules = req.files.houseRules?.[0]?.path || null;
+
+    if (!photo) return res.status(422).send("Image file is required.");
+
+    const home = new Home({
+      homeName,
+      rentPerDay,
+      address,
+      rating,
+      description,
+      photo,
+      houseRules,
+    });
+
+    await home.save();
+    res.redirect("/host/host-home-list");
+  } catch (err) {
+    next(err);
   }
-  const photo = req.file.path;
-  const home = new Home({
-    homeName,
-    rentPerDay,
-    address,
-    rating,
-    photo,
-    description,
-  });
-  home.save().then(() => {});
-  res.redirect("/host/host-home-list");
 };
 
-exports.postEditHome = (req, res, next) => {
-  const { id, homeName, rentPerDay, address, rating, description } = req.body;
-  Home.findById(id)
-    .then((home) => {
-      home.homeName = homeName;
-      home.rentPerDay = rentPerDay;
-      home.address = address;
-      home.rating = rating;
-      home.description = description;
+exports.postEditHome = async (req, res, next) => {
+  try {
+    const { id, homeName, rentPerDay, address, rating, description } = req.body;
+    const home = await Home.findById(id);
+    if (!home) return res.redirect("/host/host-home-list");
 
-      if (req.file) {
-        home.photo = req.file.path;
-      }
+    home.homeName = homeName;
+    home.rentPerDay = rentPerDay;
+    home.address = address;
+    home.rating = rating;
+    home.description = description;
 
-      home
-        .save()
-        .then(() => {
-          console.log("Home Updated Successfully");
-        })
-        .catch((err) => {
-          console.log("Error updating home:", err);
-        });
-      res.redirect("/host/host-home-list");
-    })
-    .catch((err) => {
-      console.log("Error finding home for update:", err);
-    });
+    if (req.files.photo) home.photo = req.files.photo[0].path;
+    if (req.files.houseRules) home.houseRules = req.files.houseRules[0].path;
+
+    await home.save();
+    res.redirect("/host/host-home-list");
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.postDeleteHome = (req, res, next) => {

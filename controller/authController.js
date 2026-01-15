@@ -146,7 +146,7 @@ exports.postSignup = [
         user: {},
       });
     }
-    bcrypyt
+    bcrypt
       .hash(password, 12)
       .then((hashedPassword) => {
         const user = new User({
