@@ -5,7 +5,9 @@ const hostRouter = require("./routes/hostRouter");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const mongoDbStore = require("connect-mongodb-session")(session);
-
+const multer = require("multer");
+const path = require("path");
+const rootDir = require("./util/pathutils");
 const PORT = process.env.PORT;
 const MONGO_URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@travelnest.rx3cffk.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 
@@ -31,8 +33,45 @@ app.use(
   })
 );
 
-app.use(express.urlencoded({ extended: true }));
+const randomString = (length) => {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+};
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, randomString(10) + "-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const multerStorage = { storage, fileFilter };
+
+app.use(express.urlencoded({ extended: true }));
+app.use(multer(multerStorage).single("photo"));
+app.use(express.static("public"));
+app.use("/uploads", express.static(path.join(rootDir, "uploads")));
+app.use("/host/uploads", express.static(path.join(rootDir, "uploads")));
 app.use((req, res, next) => {
   req.isLoggedIn = req.session.isLoggedIn;
   next();
@@ -48,7 +87,7 @@ app.use("/host", (req, res, next) => {
 });
 
 app.use("/host", hostRouter);
-app.use(express.static("public"));
+
 app.use(error404);
 
 mongoose

@@ -15,7 +15,7 @@
 
                 <!-- Form Card -->
                 <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-                    <form action="/host/<%= editMode ? "edit-home" : "add-home"%>" method="POST">
+                    <form action="/host/<%= editMode ? "edit-home" : "add-home"%>" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<%= editMode ? home._id : '' %>"/>
 
                         <!-- Home Name -->

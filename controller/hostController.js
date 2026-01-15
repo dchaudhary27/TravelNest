@@ -40,8 +40,11 @@ exports.gethosthomeList = (req, res, next) => {
 };
 
 exports.postAddHome = (req, res, next) => {
-  const { homeName, rentPerDay, address, rating, photo, description } =
-    req.body;
+  const { homeName, rentPerDay, address, rating, description } = req.body;
+  if (!req.file) {
+    return res.status(422).send("Image file is required.");
+  }
+  const photo = req.file.path;
   const home = new Home({
     homeName,
     rentPerDay,
@@ -55,16 +58,18 @@ exports.postAddHome = (req, res, next) => {
 };
 
 exports.postEditHome = (req, res, next) => {
-  const { id, homeName, rentPerDay, address, rating, photo, description } =
-    req.body;
+  const { id, homeName, rentPerDay, address, rating, description } = req.body;
   Home.findById(id)
     .then((home) => {
       home.homeName = homeName;
       home.rentPerDay = rentPerDay;
       home.address = address;
       home.rating = rating;
-      home.photo = photo;
       home.description = description;
+
+      if (req.file) {
+        home.photo = req.file.path;
+      }
 
       home
         .save()
