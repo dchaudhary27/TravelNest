@@ -47,47 +47,68 @@
 
                         <!-- Rating -->
                         <div class="mb-8">
-                            <label class="block text-sm font-semibold text-gray-700 mb-4">Your Rating</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-4">Your Rating</label>
+
                             <div class="flex justify-center gap-4" id="ratingContainer">
                                 <% for (let i = 1; i <= 5; i++) { %>
-                                    <input type="radio" name="rating" value="<%= i %>" id="rate<%= i %>" class="hidden">
-                                    <label for="rate<%= i %>" 
-                                        class="text-4xl cursor-pointer text-gray-300 hover:text-yellow-400 transition transform hover:scale-110 star-label"
-                                        data-value="<%= i %>">★</label>
+                                <input
+                                    type="radio"
+                                    name="rating"
+                                    value="<%= i %>"
+                                    id="rate<%= i %>"
+                                    class="hidden"
+                                    <%= editMode && home.rating === i ? "checked" : "" %>
+                                />
+
+                                <label
+                                    for="rate<%= i %>"
+                                    class="text-4xl cursor-pointer text-gray-300 hover:text-yellow-400 transition transform hover:scale-110 star-label"
+                                    data-value="<%= i %>">
+                                    ★
+                                </label>
                                 <% } %>
                             </div>
-                        </div>
+                            </div>
+
 
                         <script>
                             const stars = document.querySelectorAll('#ratingContainer .star-label');
                             const inputs = document.querySelectorAll('#ratingContainer input[type="radio"]');
-                            
-                            stars.forEach(star => {
-                                star.addEventListener('click', function() {
-                                    const value = this.getAttribute('data-value');
-                                    document.getElementById('rate' + value).checked = true;
-                                    updateStarDisplay(value);
-                                });
-                                
-                                star.addEventListener('mouseover', function() {
-                                    const value = this.getAttribute('data-value');
-                                    updateStarDisplay(value);
-                                });
-                            });
-                            
-                            document.getElementById('ratingContainer').addEventListener('mouseleave', function() {
-                                const checked = document.querySelector('#ratingContainer input[type="radio"]:checked');
-                                updateStarDisplay(checked ? checked.value : 0);
-                            });
-                            
+
                             function updateStarDisplay(value) {
                                 stars.forEach(star => {
-                                    const starValue = star.getAttribute('data-value');
-                                    star.classList.toggle('text-yellow-500', starValue <= value);
-                                    star.classList.toggle('text-gray-300', starValue > value);
+                                const starValue = star.getAttribute('data-value');
+                                star.classList.toggle('text-yellow-500', starValue <= value);
+                                star.classList.toggle('text-gray-300', starValue > value);
                                 });
                             }
+
+                        // Initialize stars on page load (EDIT MODE)
+                        const checked = document.querySelector('#ratingContainer input[type="radio"]:checked');
+                        if (checked) {
+                            updateStarDisplay(checked.value);
+                        }
+
+                        stars.forEach(star => {
+                            star.addEventListener('click', function () {
+                            const value = this.getAttribute('data-value');
+                            document.getElementById('rate' + value).checked = true;
+                            updateStarDisplay(value);
+                            });
+
+                            star.addEventListener('mouseover', function () {
+                            updateStarDisplay(this.getAttribute('data-value'));
+                            });
+                        });
+
+                        document
+                            .getElementById('ratingContainer')
+                            .addEventListener('mouseleave', function () {
+                            const checked = document.querySelector('#ratingContainer input[type="radio"]:checked');
+                            updateStarDisplay(checked ? checked.value : 0);
+                            });
                         </script>
+
 
                         <!-- Photo Upload -->
                          <div class="mb-6">
