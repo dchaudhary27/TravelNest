@@ -1,5 +1,5 @@
 const Home = require("../Model/home");
-
+const fs = require("fs");
 exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
     pageTitle: "Add Home to traveNest",
@@ -63,7 +63,12 @@ exports.postAddHome = async (req, res, next) => {
     next(err);
   }
 };
-
+exports.deleteFile = (filePath) => {
+  if (!filePath) return;
+  fs.unlink(filePath, (err) => {
+    if (err) console.log("Error deleting file:", err);
+  });
+};
 exports.postEditHome = async (req, res, next) => {
   try {
     const { id, homeName, rentPerDay, address, rating, description } = req.body;
@@ -76,9 +81,14 @@ exports.postEditHome = async (req, res, next) => {
     home.rating = rating;
     home.description = description;
 
-    if (req.files.photo) home.photo = req.files.photo[0].path;
-    if (req.files.houseRules) home.houseRules = req.files.houseRules[0].path;
-
+    if (req.files && req.files.photo && req.files.photo.length > 0) {
+      exports.deleteFile(home.photo);
+      home.photo = req.files.photo[0].path;
+    }
+    if (req.files && req.files.houseRules && req.files.houseRules.length > 0) {
+      exports.deleteFile(home.houseRules);
+      home.houseRules = req.files.houseRules[0].path;
+    }
     await home.save();
     res.redirect("/host/host-home-list");
   } catch (err) {
