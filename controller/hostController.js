@@ -1,5 +1,6 @@
 const Home = require("../Model/home");
-const fs = require("fs");
+const { deleteFromCloudinary, extractPublicId } = require("../util/cloudinary");
+
 exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
     pageTitle: "Add Home to traveNest",
@@ -9,6 +10,7 @@ exports.getAddHome = (req, res, next) => {
     editMode: false,
   });
 };
+
 exports.getEditHome = (req, res, next) => {
   const homeId = req.params.homeId;
   const editMode = req.query.edit === "true";
@@ -28,6 +30,7 @@ exports.getEditHome = (req, res, next) => {
     });
   });
 };
+
 exports.gethosthomeList = (req, res, next) => {
   Home.find().then((registeredHomes) => {
     res.render("host/host-home-list", {
@@ -42,8 +45,17 @@ exports.gethosthomeList = (req, res, next) => {
 exports.postAddHome = async (req, res, next) => {
   try {
     const { homeName, rentPerDay, address, rating, description } = req.body;
-    const photo = req.files.photo?.[0]?.path || null;
-    const houseRules = req.files.houseRules?.[0]?.path || null;
+    const photo =
+      req.files && req.files.photo && req.files.photo.length > 0
+        ? req.files.photo[0].path
+        : null;
+    const houseRules =
+      req.files && req.files.houseRules && req.files.houseRules.length > 0
+        ? req.files.houseRules[0].path
+        : null;
+
+    const photoPublicId = photo ? extractPublicId(photo) : null;
+    const houseRulesPublicId = houseRules ? extractPublicId(houseRules) : null;
 
     if (!photo) return res.status(422).send("Image file is required.");
 
@@ -53,58 +65,118 @@ exports.postAddHome = async (req, res, next) => {
       address,
       rating,
       description,
-      photo,
-      houseRules,
+      photo: {
+        url: photo,
+        publicId: photoPublicId,
+      },
+      houseRules: {
+        url: houseRules,
+        publicId: houseRulesPublicId,
+      },
     });
 
     await home.save();
     res.redirect("/host/host-home-list");
   } catch (err) {
+    console.error("Error adding home:", err);
     next(err);
   }
 };
-exports.deleteFile = (filePath) => {
-  if (!filePath) return;
-  fs.unlink(filePath, (err) => {
-    if (err) console.log("Error deleting file:", err);
-  });
+
+// Updated deleteFile function for Cloudinary
+exports.deleteFile = async (fileInfo) => {
+  try {
+    if (!fileInfo) return;
+
+    // If it's an object with publicId property
+    if (fileInfo.publicId) {
+      await deleteFromCloudinary(fileInfo.publicId);
+    }
+    // If it's a direct public_id string
+    else if (typeof fileInfo === "string") {
+      await deleteFromCloudinary(fileInfo);
+    }
+  } catch (err) {
+    console.error("Error deleting file:", err);
+  }
 };
+
 exports.postEditHome = async (req, res, next) => {
   try {
     const { id, homeName, rentPerDay, address, rating, description } = req.body;
     const home = await Home.findById(id);
+
     if (!home) return res.redirect("/host/host-home-list");
 
+    // Update basic info
     home.homeName = homeName;
     home.rentPerDay = rentPerDay;
     home.address = address;
     home.rating = rating;
     home.description = description;
 
+    // Handle photo update
     if (req.files && req.files.photo && req.files.photo.length > 0) {
-      exports.deleteFile(home.photo);
-      home.photo = req.files.photo[0].path;
+      // Delete old photo from Cloudinary if exists
+      if (home.photo && home.photo.publicId) {
+        await exports.deleteFile(home.photo.publicId);
+      }
+
+      // Update with new photo
+      const newPhotoUrl = req.files.photo[0].path;
+      home.photo = {
+        url: newPhotoUrl,
+        publicId: extractPublicId(newPhotoUrl),
+      };
     }
+
+    // Handle houseRules update
     if (req.files && req.files.houseRules && req.files.houseRules.length > 0) {
-      exports.deleteFile(home.houseRules);
-      home.houseRules = req.files.houseRules[0].path;
+      // Delete old houseRules from Cloudinary if exists
+      if (home.houseRules && home.houseRules.publicId) {
+        await exports.deleteFile(home.houseRules.publicId);
+      }
+
+      // Update with new houseRules
+      const newRulesUrl = req.files.houseRules[0].path;
+      home.houseRules = {
+        url: newRulesUrl,
+        publicId: extractPublicId(newRulesUrl),
+      };
     }
+
     await home.save();
     res.redirect("/host/host-home-list");
   } catch (err) {
+    console.error("Error editing home:", err);
     next(err);
   }
 };
 
-exports.postDeleteHome = (req, res, next) => {
-  const homeId = req.params.homeId;
-  Home.findByIdAndDelete(homeId)
-    .then(() => {
-      console.log("Home Deleted Successfully");
-      res.redirect("/host/host-home-list");
-    })
-    .catch((err) => {
-      console.log("Error deleting home:", err);
-      res.redirect("/host/host-home-list");
-    });
+exports.postDeleteHome = async (req, res, next) => {
+  try {
+    const homeId = req.params.homeId;
+    const home = await Home.findById(homeId);
+
+    if (home) {
+      // Delete photo from Cloudinary
+      if (home.photo && home.photo.publicId) {
+        await exports.deleteFile(home.photo.publicId);
+      }
+
+      // Delete houseRules from Cloudinary
+      if (home.houseRules && home.houseRules.publicId) {
+        await exports.deleteFile(home.houseRules.publicId);
+      }
+    }
+
+    // Delete from database
+    await Home.findByIdAndDelete(homeId);
+
+    console.log("Home Deleted Successfully");
+    res.redirect("/host/host-home-list");
+  } catch (err) {
+    console.error("Error deleting home:", err);
+    res.redirect("/host/host-home-list");
+  }
 };
