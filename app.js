@@ -62,7 +62,7 @@ mongoose
   .connect(MONGO_URL)
   .then(() => {
     console.log("Connected to MongoDB");
-    app.listen(PORT, () => {
+    app.listen(PORT || 3000, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });
   })
