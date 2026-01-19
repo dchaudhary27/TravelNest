@@ -7,9 +7,21 @@
             >
                 ✈️ TravelNest
             </a>
-            
+        </div>
+
+        <!-- Hamburger Button -->
+        <div class="md:hidden flex items-center">
+            <button id="menu-toggle" class="focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-3">
             <% if (isLoggedIn) { %>
-            <ul class="hidden md:flex space-x-1">
+            <ul class="flex space-x-1">
                 <%if( user && user.userType === "traveler"){%>
                 <li>
                     <a
@@ -19,7 +31,6 @@
                         Home
                     </a>
                 </li>
-               
                 <li>
                     <a
                         href="/bookings"
@@ -37,7 +48,7 @@
                     </a>
                 </li>
                 <%} else {%>
-                     <li>
+                <li>
                     <a
                         href="/host/host-home-list"
                         class="hover:bg-red-400 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'host-home-list' ? 'bg-red-400' : '' %>"
@@ -56,13 +67,10 @@
                 <%}%>
             </ul>
             <% } %>
-        </div>
-
-        <div class="flex items-center space-x-3">
             <% if (!isLoggedIn) { %>
             <a
                 href="/login"
-                 class="bg-white text-red-600 font-semibold py-2 px-6 rounded-lg hover:bg-red-50 transition duration-300"
+                class="bg-white text-red-600 font-semibold py-2 px-6 rounded-lg hover:bg-red-50 transition duration-300"
             >
                 Sign In
             </a>
@@ -83,5 +91,114 @@
             </form>
             <% } %>
         </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="fixed inset-0 z-50 bg-black bg-opacity-60 hidden">
+            <div class="absolute top-0 right-0 w-64 h-full bg-white text-red-600 shadow-lg flex flex-col p-6 space-y-4">
+                <button id="menu-close" class="self-end mb-6 focus:outline-none">
+                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+                <a
+                    href="/"
+                    class="text-2xl font-bold mb-4 hover:text-red-400 transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'TravelNest' ? 'text-red-400' : '' %>"
+                >
+                    ✈️ TravelNest
+                </a>
+                <% if (isLoggedIn) { %>
+                <ul class="flex flex-col space-y-2">
+                    <%if( user && user.userType === "traveler"){%>
+                    <li>
+                        <a
+                            href="/home-list"
+                            class="hover:bg-red-100 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'home' ? 'bg-red-100' : '' %>"
+                        >
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="/bookings"
+                            class="hover:bg-red-100 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'bookings' ? 'bg-red-100' : '' %>"
+                        >
+                            Bookings
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="/favourites"
+                            class="hover:bg-red-100 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'favourite-list' ? 'bg-red-100' : '' %>"
+                        >
+                            ❤️ Favourites
+                        </a>
+                    </li>
+                    <%} else {%>
+                    <li>
+                        <a
+                            href="/host/host-home-list"
+                            class="hover:bg-red-100 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'host-home-list' ? 'bg-red-100' : '' %>"
+                        >
+                            My Listings
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="/host/add-home"
+                            class="hover:bg-red-100 py-2 px-4 rounded-lg transition duration-300 <%= typeof activeTab !== 'undefined' && activeTab === 'add-home' ? 'bg-red-100' : '' %>"
+                        >
+                            Add Home
+                        </a>
+                    </li>
+                    <%}%>
+                </ul>
+                <% } %>
+                <div class="flex flex-col space-y-2 mt-4">
+                    <% if (!isLoggedIn) { %>
+                    <a
+                        href="/login"
+                        class="bg-red-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-red-700 transition duration-300"
+                    >
+                        Sign In
+                    </a>
+                    <a
+                        href="/signup"
+                        class="bg-red-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-red-700 transition duration-300"
+                    >
+                        Sign Up
+                    </a>
+                    <% } else { %>
+                    <form action="/logout" method="POST">
+                        <button
+                            type="submit"
+                            class="bg-red-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-red-700 transition duration-300 w-full text-left"
+                        >
+                            Sign Out
+                        </button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+        </div>
     </nav>
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuClose = document.getElementById('menu-close');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+        });
+
+        menuClose.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        // Optional: Close menu when clicking outside the sidebar
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
 </header>
